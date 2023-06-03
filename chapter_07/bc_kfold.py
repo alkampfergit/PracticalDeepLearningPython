@@ -38,30 +38,29 @@ def pp(z,k,s):
         print("%0.4f " % z[k,i], end='')
     print()
 
-def main():
-    x = np.load("../data/breast/bc_features_standard.npy")
-    y = np.load("../data/breast/bc_labels.npy")
-    idx = np.argsort(np.random.random(y.shape[0]))
-    x = x[idx]
-    y = y[idx]
-    m = int(sys.argv[1])
-    z = np.zeros((8,m))
 
-    for k in range(m):
-        x_train, y_train, x_test, y_test = split(x,y,k,m)
-        z[0,k] = run(x_train, y_train, x_test, y_test, NearestCentroid())
-        z[1,k] = run(x_train, y_train, x_test, y_test, KNeighborsClassifier(n_neighbors=3))
-        z[2,k] = run(x_train, y_train, x_test, y_test, KNeighborsClassifier(n_neighbors=7))
-        z[3,k] = run(x_train, y_train, x_test, y_test, GaussianNB())
-        z[4,k] = run(x_train, y_train, x_test, y_test, DecisionTreeClassifier())
-        z[5,k] = run(x_train, y_train, x_test, y_test, RandomForestClassifier(n_estimators=5))
-        z[6,k] = run(x_train, y_train, x_test, y_test, RandomForestClassifier(n_estimators=50))
-        z[7,k] = run(x_train, y_train, x_test, y_test, SVC(kernel="linear", C=1.0))
+x = np.load("../data/breast/bc_features_standard.npy")
+y = np.load("../data/breast/bc_labels.npy")
+idx = np.argsort(np.random.random(y.shape[0]))
+x = x[idx]
+y = y[idx]
+m = int(sys.argv[1])
+z = np.zeros((8,m))
 
-    pp(z,0,"Nearest"); pp(z,1,"3-NN")
-    pp(z,2,"7-NN");    pp(z,3,"Naive Bayes")
-    pp(z,4,"Decision Tree");    pp(z,5,"Random Forest (5)")
-    pp(z,6,"Random Forest (50)");    pp(z,7,"SVM (linear)")
+for k in range(m):
+    x_train, y_train, x_test, y_test = split(x,y,k,m)
+    z[0,k] = run(x_train, y_train, x_test, y_test, NearestCentroid())
+    z[1,k] = run(x_train, y_train, x_test, y_test, KNeighborsClassifier(n_neighbors=3))
+    z[2,k] = run(x_train, y_train, x_test, y_test, KNeighborsClassifier(n_neighbors=7))
+    z[3,k] = run(x_train, y_train, x_test, y_test, GaussianNB())
+    z[4,k] = run(x_train, y_train, x_test, y_test, DecisionTreeClassifier())
+    z[5,k] = run(x_train, y_train, x_test, y_test, RandomForestClassifier(n_estimators=5))
+    z[6,k] = run(x_train, y_train, x_test, y_test, RandomForestClassifier(n_estimators=50))
+    z[7,k] = run(x_train, y_train, x_test, y_test, SVC(kernel="linear", C=1.0))
 
-main()
+pp(z,0,"Nearest"); pp(z,1,"3-NN")
+pp(z,2,"7-NN");    pp(z,3,"Naive Bayes")
+pp(z,4,"Decision Tree");    pp(z,5,"Random Forest (5)")
+pp(z,6,"Random Forest (50)");    pp(z,7,"SVM (linear)")
+
 
